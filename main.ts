@@ -12,5 +12,12 @@ const MONOLOGUE =
   "Just, when you sit on the throne, love, do me one kindness. Lose the key. I have earned one afternoon.";
 
 const outPath = process.env.OUTPUT_PATH ?? "/output/entry.txt";
+
+// Guard: the judge rewards staying near 100 words, so refuse to emit a drifted text.
+const wordCount = MONOLOGUE.trim().split(/\s+/).length;
+if (wordCount !== 100) {
+  throw new Error(`monologue is ${wordCount} words, expected 100`);
+}
+
 mkdirSync(outPath.slice(0, outPath.lastIndexOf("/")) || ".", { recursive: true });
 writeFileSync(outPath, MONOLOGUE + "\n", "utf8");
